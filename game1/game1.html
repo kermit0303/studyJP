@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>冒險故事書</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Noto Serif TC', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* 共用的樣式 */
+    .book {
+      width: 700px;
+      max-width: 100%;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    #title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #content {
+      font-size: 30px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    #choices {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .choice-btn {
+      flex: 0 0 48%;
+      padding: 15px 20px;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="book">
+    <div id="title"></div>
+    <div id="content"></div>
+    <div id="choices"></div>
+  </div>
+
+  <script>
+    const page = "game1"; // 預設 game1
+
+    // 動態載入 CSS
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = page + ".css"; // 例如 game1.css / game2.css
+    document.head.appendChild(css);
+
+    // 動態載入 JS (故事資料)
+    const script = document.createElement("script");
+    script.src =  "game1.js"; // 例如 game1.js / game2.js
+    script.onload = () => {
+      
+      const story = questions[0];
+      let currentItem = "item1";
+
+      function renderItem(id) {
+        const item = story[id];
+        if (!item) return;
+
+        document.getElementById("title").textContent = item.til || "";
+        document.getElementById("content").textContent = item.cnt || "";
+
+        const choicesDiv = document.getElementById("choices");
+        choicesDiv.innerHTML = "";
+
+        if (item.conditions.length === 1) {
+          choicesDiv.classList.add("one-choice");
+        } else {
+          choicesDiv.classList.remove("one-choice");
+        }
+        
+        item.conditions.forEach(condition => {
+          const btn = document.createElement("button");
+          btn.className = "choice-btn";
+          btn.textContent = condition.cnt;
+          btn.onclick = () => {
+            if (condition.go) {
+              renderItem(condition.go);
+            } else {
+              alert("故事結束了！");
+            }
+          };
+          choicesDiv.appendChild(btn);
+        });
+      }
+
+      renderItem(currentItem);
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

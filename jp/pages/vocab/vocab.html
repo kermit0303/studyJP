@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <title>詞彙工具</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+
+    .inbody {
+      margin: 0;
+      font-family: 'Noto Serif TC', serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background: #faf8f4;
+      color: #4a4a4a;
+      /* 溫和深灰 */
+    }
+
+    #word-list {
+      flex: 1;
+      overflow-y: auto;
+      /* ✅ 滾軸只在這裡 */
+      box-sizing: border-box;
+      padding: 10px;
+    }
+    /* 日系風格表格標題 */
+table caption {
+  margin-top: 30px;
+  text-align: left;            
+  font-family: 'Noto Serif JP', 'Noto Serif TC', serif;
+  font-size: 30px;             
+  font-weight: 600;            /* 稍微加粗 */
+  color: #2c3e50;              
+  letter-spacing: 0.05em;      
+  margin-bottom: 0.5em;        /* 與表格保持距離 */
+  border-bottom: 2px solid #e67e22; /* 加底線強調 */
+  padding-bottom: 0.2em;
+}
+
+table caption::before {
+  content: "§ ";
+  font-size: 28px;
+  vertical-align: middle;
+  color: #e67e22; 
+}
+
+/* 可選：給 caption 淡背景 */
+table caption {
+  background: #fdf6ec;   /* 淡米橙背景 */
+  padding: 0.4em 0.6em;
+  border-radius: 8px;    /* 圓角 */
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div class="toolbar">
+    <a href="vocab.html" class="active">単語</a>
+    <a href="../grammar/grammar.html">文型</a>
+    <a href="../record/record.html">記錄</a>
+    <p id="vid" style="color: #ccc;">V1.0.31</p>
+  </div>
+  <div class="inbody">
+    <div class="sidebar">
+      <ul id="category-list"></ul>
+    </div>
+
+    <div class="main">
+      <div class="top-bar">
+        <button id="toggle-sidebar">☰</button>
+        <div class="search-box">
+
+        </div>
+      </div>
+      <div id="word-list"></div>
+    </div>
+  </div>
+  
+  <script src="../../js/getVersion.js"></script>
+  <script src="../../js/func.js"></script>
+  <script src="vocab.js"></script>
+</body>
+
+</html>

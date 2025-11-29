@@ -1,0 +1,450 @@
+html {
+    scroll-padding-top: 80px;
+    /* 和 toolbar 高度一致 */
+}
+
+section {
+    scroll-margin-top: 60px;
+    /* top-bar 的高度 */
+}
+
+body {
+    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', 'Noto Serif TC', sans-serif;
+    margin: 0;
+    background: #faf8f4;
+    color: #333;
+    overflow: hidden;
+    /* 這樣 body 就不會有滾軸了 */
+}
+
+.toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    /* 你原本的高度 */
+    background: #333;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    z-index: 30;
+}
+
+    .toolbar a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 32px;
+        padding: 12px 16px;
+        border-radius: 6px;
+    }
+
+        .toolbar a:hover,
+        .toolbar a.active {
+            background: #555;
+        }
+
+#vid {
+    position: absolute;
+    /* 必須加 */
+    bottom: 5px;
+    /* 貼近底部 */
+    left: 50%;
+    /* 水平置中 */
+    transform: translateX(-50%);
+    /* 調整水平置中 */
+    color: #ccc;
+    font-size: 18px;
+}
+
+.content {
+    padding: 10px;
+}
+
+.word {
+    font-size: 28px;
+}
+
+
+ruby {
+    ruby-position: over;
+    margin-right: 5px;
+    font-size: 36px;
+    ruby-align: center;
+}
+
+
+.chinese {
+    font-weight: bold;
+    margin-left: 15px;
+    font-size: 22px;
+    vertical-align: middle;
+    color: #4a4a4a;
+}
+
+.grammar h2 {
+    color: #1d3557;
+}
+
+.grammar p {
+    font-size: 26px;
+}
+
+/* 漢字主體 */
+ruby > rb {
+    color: #2c3e50;
+    /* 深藍灰 */
+    font-weight: bold;
+    font-size: 36px;
+    padding: 0 2px;
+}
+
+/* 假名 */
+ruby > rt {
+    color: #e67e22;
+    /* 橘色 */
+    font-size: 30px;
+    font-weight: normal;
+}
+
+/* 中文翻譯區塊 */
+.zh {
+    margin-top: 5px;
+    font-size: 32px;
+    color: #34495e;
+}
+
+.small {
+    font-size: 80%;
+    /* 調整促音大小，60% 可依需求調整 */
+    display: inline-block;
+    line-height: 1;
+}
+
+.table-jp {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    color: #5a5145;
+    /* 柔和棕灰文字 */
+    background: #fbf9f3;
+    /* 超淡米白背景 */
+    box-shadow: 0 3px 10px rgba(195, 180, 160, 0.12);
+    /* 溫和棕色陰影 */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    /* 統一 th、td 的排版與線條 */
+    .table-jp th,
+    .table-jp td {
+        padding: 8px 12px;
+        font-size: 40px;
+        text-align: left;
+        border-right: 1px solid #e5dccf;
+        /* 垂直分隔線 */
+        border-bottom: 1px solid #ded6c8;
+        /* 水平底線 */
+    }
+
+        .table-jp th:last-child,
+        .table-jp td:last-child {
+            border-right: none;
+        }
+
+    .table-jp thead {
+        background-color: #f2e9db;
+        /* 柔和米棕色調 */
+        color: #7a6f5a;
+        font-weight: 700;
+        border-bottom: 3px solid #c7b89a;
+        /* 深米棕色邊框 */
+    }
+
+    .table-jp tbody tr:nth-child(odd) {
+        background-color: #fffefb;
+        /* 幾乎純白 */
+    }
+
+    .table-jp tbody tr:nth-child(even) {
+        background-color: #f9f6ee;
+        /* 極淡米色 */
+    }
+
+    .table-jp tbody tr:hover {
+        background-color: #e7dfd1;
+        /* 柔和米棕，hover */
+        cursor: pointer;
+    }
+.table-jp caption {
+    caption-side: top;
+    text-align: left !important;
+    display: table-caption;   /* 確保使用表格標題 display */
+    width: 100%;              /* 讓 caption 撐滿 table */
+    margin-bottom: 8px;
+} 
+
+.kana {
+    font-size: 30px;
+    fill: #6e9c74;
+    /* 青藍色 */
+    font-family: 'Noto Serif JP', serif;
+}
+
+.kanji {
+    font-size: 40px;
+    fill: #1d3557;
+    /* 深灰色 */
+    font-family: 'Noto Serif JP', serif;
+}
+
+h2::before {
+    content: "§";
+    margin-right: 4px;
+    color: #3b4a18;
+    /* 稍微深一點的墨綠 */
+    font-weight: bold;
+    font-size: 1.2em;
+    /* 稍微大一點 */
+}
+
+.table-jp td {
+    font-size: 36px;
+    /* 固定漢字/主要文字大小 */
+    line-height: 1.5;
+}
+
+    /* table 內 ruby 的假名固定大小 */
+    .table-jp td ruby > rt {
+        font-size: 30px;
+        /* 固定假名大小 */
+        line-height: 1;
+        margin-bottom: 2px;
+    }
+
+
+.option-box {
+    padding: 0px 15px ;
+    display: inline-block;
+    /* 整個框框跟文字在同一行 */
+    border-left: 3px solid #d8a47f;
+    /* 柔和的淺橘色大括弧效果 */
+    background: #f9f5f0;
+    /* 溫暖米色背景 */
+    border-radius: 12px;
+    margin: 14px;
+    vertical-align: middle;
+    color: #7a5a3e;
+    /* 暖棕色字體 */
+    font-weight: 600;
+    box-shadow: 1px 1px 4px rgba(216, 164, 127, 0.3);
+}
+
+    .option-box:hover {
+        background: #f3e8dd;
+        /* 輕微變亮效果，hover時更溫柔 */
+    }
+
+    .option-box div {
+        line-height:2;
+        font-size: 36px;
+        /* 每個選項換行間距 */
+    }
+
+.note-box-top ruby > rt {
+    font-size: 30px;
+    /* 固定字體大小 */
+    font-weight: normal;
+    /* 視需要調整粗細 */
+    line-height: 1.2;
+    /* 避免太擠 */
+}
+
+
+.yellow {
+    color: #d9b611;
+    /* 柔和金黃 */
+    font-weight: bold;
+}
+
+.strike {
+    color: #7a7a7a;
+    text-decoration: line-through;
+    text-decoration-color: #c08c2c;
+}
+
+.blue {
+    color: #5a9bd4;
+    /* 日系水藍 */
+    font-weight: bold;
+}
+
+.space {
+    color: #7fa9a2;
+    /* 柔和綠 */
+    font-weight: bold;
+    letter-spacing: 0.3em;
+}
+
+.sidebar {
+    position: fixed; /* 固定在視窗 */
+    top: 220px; /* 避開 toolbar */
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    background: #f9f6f0;
+    padding: 30px 20px;
+    overflow-y: auto;
+    border-right: 1px solid #e4ddd4;
+    transform: translateX(-100%); /* 預設隱藏，移出畫面 */
+    transition: transform 0.3s ease;
+    z-index: 50;
+}
+
+    .sidebar.show {
+        transform: translateX(0); /* 顯示時滑入 */
+    }
+
+    .sidebar h2 {
+        font-size: 38px;
+        font-weight: 700;
+        color: #6b5b4b;
+        /* 棕色調 */
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 18px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #7a6f64;
+        /* 柔和灰棕 */
+        padding: 10px 15px;
+        display: block;
+        border-radius: 6px;
+        font-size: 30px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .sidebar a:hover {
+            background: #e7dfd6;
+            /* 和紙米色背景 */
+            color: #40514e;
+            /* 墨綠 */
+        }
+
+.main {
+    margin-top: 80px;
+    /* 避開 toolbar */
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.03);
+    color: #5a5a5a;
+    overflow: hidden;
+    /* 可以保留，但不要阻止 top-bar sticky */
+}
+
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    /* 一定要有背景 */
+    z-index: 20;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+
+/* 調整按鈕 */
+
+/* 分類按鈕樣式 */
+#toggle-sidebar {
+    flex-shrink: 0;
+    /* 按鈕寬度固定，不會縮 */
+    color: #b58968;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 70px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    #toggle-sidebar:hover {
+        color: #8b6d4d;
+    }
+
+.cell-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* 內容靠底 */
+}
+
+.jp ruby {
+    vertical-align: bottom; /* ruby 內文字置底 */
+}
+
+.blue-underline-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center; /* 文字與備註置中 */
+    font-size: 50px;
+}
+
+.undernote {
+    font-size: 45px;
+    color: #7a8a99; /* 柔和的灰藍色 */
+    margin-top: 2px;
+    user-select: none;
+}
+
+.underblue {
+    position: relative;
+    display: inline-block; /* 建議加這行，確保底線寬度正確 */
+
+}
+.underblue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: #5a9bd4;
+}
+.icon-important {
+    color: #d14b4b;
+    font-size: 0.8em;
+    margin-right: 0.3em;
+    user-select: none;
+    font-weight: bold;
+}
+
+    .icon-important::before {
+        content: "❖";
+    }
+
+
+.dash {
+    color: #40514e;
+    font-size: 60px;
+    border-radius: 4px;
+    font-weight: bold;
+}

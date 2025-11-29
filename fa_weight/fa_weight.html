@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>健康紀錄多圖表（固定顯示數字）</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <style>
+        body {
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 30px;
+            color: #34495e;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 一排兩格 */            
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .card:hover {
+                box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            }
+
+            .card h2 {
+                margin: 0 0 10px 0;
+                font-weight: 600;
+                font-size: 40px;
+                color: #34495e;
+            }
+
+        canvas {
+            width: 100% !important;
+            height: 220px !important;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 12px 15px 25px;
+            }
+
+            canvas {
+                height: 180px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>健康紀錄多圖表</h1>
+    <div class="grid-container" id="chartContainer"></div>
+
+    <script>
+        // 模擬資料
+        const healthData = {
+            dates: ["2025-08-11", "2025-08-24", "2025-09-03", "2025-09-11","2025-10-03","2025-10-20","2025-10-27","2025-11-09"],
+            weight: [84.3, 82.3,81.6,81.25,80.30,81.0,81.75,79.95],
+            bodyFat: [45.14,44.33,43.95,43.77,43.80,43.66,43.99,43.51],
+            fatMass: [38.06,36.48,35.86,35.56,35.17,35.41,35.96,34.78],
+            visceralFat: [14.5,14.5,14,14,14.5,14,14,14],
+            protein: [7.96,9.3,8.94,8.90,11.13,8.75,8.78,10.51],
+            water: [35.43,33.71,34.0,33.99,31.25,34.13,34.20,31.90],
+            muscle: [43.4,43.0,42.94,42.89,42.38,42.89,42.98,42.41],
+            skeletalMuscle: [19.73,18.98,19.0,18.96,17.80,19.0,19.08,18.06],
+            boneMass: [2.88,2.84,2.83,2.83,2.78,2.83,2.84,2.78]
+        };
+
+        const lastIndex = healthData.dates.length;
+        const startIndex = Math.max(lastIndex - 5, 0);
+        const slicedDates = healthData.dates.slice(startIndex, lastIndex);
+
+        const dataSets = [
+            { key: 'weight', label: '體重', color: 'rgba(255, 99, 132, 1)' },
+            { key: 'bodyFat', label: '體脂率', color: 'rgba(54, 162, 235, 1)' },
+            { key: 'fatMass', label: '脂肪', color: 'rgba(255, 206, 86, 1)' },
+            { key: 'visceralFat', label: '內臟脂肪', color: 'rgba(75, 192, 192, 1)' },
+            { key: 'protein', label: '蛋白質', color: 'rgba(153, 102, 255, 1)' },
+            { key: 'water', label: '水分', color: 'rgba(255, 159, 64, 1)' },
+            { key: 'muscle', label: '肌肉', color: 'rgba(100, 200, 100, 1)' },
+            { key: 'skeletalMuscle', label: '骨骼肌', color: 'rgba(200, 100, 200, 1)' },
+            { key: 'boneMass', label: '骨質', color: 'rgba(100, 100, 255, 1)' }
+        ];
+
+        const container = document.getElementById('chartContainer');
+
+        dataSets.forEach(({ key, label, color }) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const title = document.createElement('h2');
+            title.textContent = label;
+            card.appendChild(title);
+
+            const canvas = document.createElement('canvas');
+            card.appendChild(canvas);
+            container.appendChild(card);
+
+            const dataValues = healthData[key].slice(startIndex, lastIndex);
+
+            new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: slicedDates,
+                    datasets: [{
+                        label: label,
+                        data: dataValues,
+                        borderColor: color,
+                        backgroundColor: color.replace('1)', '0.2)'),
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        borderWidth: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: true },
+                        datalabels: {
+                            display: true,
+                            color: '#333',
+                            anchor: 'end',
+                            align: 'top',
+                            font: {
+                                weight: 'bold',
+                                size: 25,
+                            },
+                            formatter: value => value,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 25 },
+                            },
+                            grid: { display: false },
+                        },
+                        y: {
+                            beginAtZero: false,
+                            suggestedMax: Math.max(...dataValues) * 1.03,  // <- 這裡
+
+                            ticks: { font: { size: 25 } },
+                            grid: { color: '#eee' },
+                        }
+                    },
+                },
+                plugins: [ChartDataLabels]
+            });
+        });
+    </script>
+</body>
+</html>

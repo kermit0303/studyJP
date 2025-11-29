@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <title>文法筆記系統</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .inbody {
+            margin: 0;
+            font-family: 'Noto Serif TC', serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background: #faf8f4;
+            color: #4a4a4a;
+            /* 溫和深灰 */
+        }
+
+        /* 調整搜尋框 */
+        .search-box {
+            flex-grow: 1;
+            /* 撐滿剩餘空間 */
+            min-width: 0;
+            /* 允許縮小，防止溢出 */
+        }
+
+            .search-box input {
+                width: 100%;
+                padding: 12px 16px;
+                font-size: 36px;
+                border: 2px solid #c7b8a6;
+                /* 淡米色 */
+                border-radius: 8px;
+                color: #5a5a5a;
+                background: #fdfbf6;
+                box-sizing: border-box;
+                /* 很重要 */
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+                .search-box input:focus {
+                    outline: none;
+                    border-color: #789262;
+                    /* 柔和綠 */
+                    box-shadow: 0 0 6px #789262aa;
+                }
+
+        section h2 {
+            color: #4a5d23;
+            /* 墨綠 */
+            margin: 6px 0;
+            font-size: 36px;
+            line-height: 1.4;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #3b6978;
+            box-shadow: 0 0 6px #3b6978aa;
+        }
+
+        .highlight {
+            background: #3b6978aa;
+            font-weight: 700;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        section {
+            scroll-margin-top: 120px;
+            margin: 10px;
+            font-size: 40px;
+            line-height: 1.8;
+            color: #5a5a5a;
+        }
+
+            section p {
+                margin: 12px 0;
+            }
+
+        .brace-container {
+            border-left: 4px solid #789262;
+            /* 柔和綠 */
+            padding-left: 12px;
+            margin: 12px 0;
+        }
+
+            .brace-container p {
+                margin: 4px 0;
+            }
+
+
+        .example-block {
+            margin: 20px;
+            padding: 5px;
+            border-left: 4px solid #7a9e7e;
+            /* 柔和綠 */
+            background: #faf9f6;
+            border-radius: 6px;
+        }
+
+        .example-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #40514e;
+        }
+
+        .line-zh {
+            color: #6b5b4b;
+            /* 柔棕色，更溫暖 */
+            font-weight: 500;
+            font-size: 34px;
+            line-height: 1.5;
+            margin: 6px 0;
+            border-left: 3px solid #d8c3b5;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+            .line-zh.trans {
+                color: #908b83; /* 柔和的冷灰褐，有深度又溫柔 */
+                font-style: italic;
+                font-size: 28px;
+                line-height: 1.75;
+                letter-spacing: 0.04em;
+                font-family: "Noto Serif JP", "Yu Mincho", serif;
+            }
+
+        .exam-zh {
+            color: #6b5b4b;
+            font-weight: bold;
+            /* 柔棕色，比原本深灰溫暖 */
+            font-size: 32px;
+            /* 適中大小 */
+            line-height: 1.6;
+            /* 舒服行距 */
+            margin: 3px 0 6px 0;
+            /* 上下空間，避免緊貼其他元素 */
+            background: #fffdf8;
+            /* 米白色背景，更柔和 */
+            padding: 4px 6px;
+            /* 內距，文字不貼邊 */
+            border-radius: 8px;
+            /* 柔和圓角 */
+            box-shadow: 0 1px 4px rgba(160, 150, 130, 0.1);
+            /* 輕微陰影 */
+        }
+
+        .exam-jp {
+            color: #2c3e50;
+            line-height: 1.8;
+            background: #fdfcf9;
+            font-weight: bold;
+            /* 幾乎白的米色 */
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #ece7de;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .box {
+            border: 2px solid #d8cfc4;
+            background: #fdfbf6;
+            padding: 5px 20px 5px 20px; /* 固定不動 */
+            margin: 2px;
+            border-radius: 12px;
+            box-shadow: 1px 2px 8px rgba(200, 180, 160, 0.15);
+            color: #5a5a5a;
+            font-size: 40px;
+            line-height: 1.6;
+            position: relative;
+            overflow: visible; /* 確保 rt 往外跑不被裁剪 */
+        }
+
+            .box:has(rt) {
+                margin-top: 10px; /* 往上頂出框線高度，讓 rt 領域可以「超出」框線 */
+                padding-top: 30px; /* 可根據需要調整 */
+                transition: margin-top 5.3s ease;
+            }
+
+            .box::before {
+                content: '✿';
+                position: absolute;
+                top: -20px;
+                left: -20px;
+                font-size: 24px;
+                color: #c8a98b;
+                padding: 0 10px;
+                border-radius: 50%;
+            }
+
+        ruby > span.box {
+            display: inline-flex;
+            align-items: baseline;
+        }
+        .box rt {
+            position: relative;
+            z-index: 2;
+        }
+        .note-top {
+            display: inline-block;
+            position: relative;
+            z-index: 0;
+            margin-top: 120px;
+            /* 預設比較小 */
+        }
+
+            /* 如果 note-top 裡有 rt，就改成比較大的 margin */
+            .note-top:has(rt) {
+                margin-top: 155px;
+            }
+
+        .note-box-top {
+            margin-top: 2px;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            transform: translateY(-70px);
+            background: #fffae0;
+            border: 2px solid #e0c080;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 36px;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 99999;
+            white-space: nowrap; /* 外層強制不換行 */
+            display: inline-block;
+            writing-mode: horizontal-tb !important;
+        }
+
+
+        .note-arrow {
+            position: absolute;
+            bottom: 100%;
+            left: -10px;
+            /* 讓箭頭在備註框左下方 */
+            width: 20px;
+            height: 20px;
+            overflow: visible;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translateY(-10px);
+            /* 箭頭稍微往上，和備註框對齊 */
+        }
+
+        .arrow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        /* SVG container */
+        .svg-container {
+            display: inline-block;
+            position: relative;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.03);
+            padding: 4px 8px;
+            vertical-align: text-top;
+            /* 或 top 都可嘗試 */
+        }
+
+
+            .svg-container .node {
+                position: absolute;
+                padding: 10px 16px;
+                background: #f9f6f0;
+                border: 1.5px solid #e7dfd6;
+                border-radius: 6px;
+                font-weight: bold;
+                color: #4a4a4a;
+                box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .svg-container svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .svg-container path {
+                stroke: #789262;
+                stroke-width: 2.5px;
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                marker-end: url(#arrow);
+            }
+
+
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .error-icon {
+            border: 2px solid #e26a6a;
+            position: relative;
+        }
+
+            .error-icon::before,
+            .error-icon::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 60%;
+                height: 2px;
+                background-color: #e26a6a;
+            }
+
+            .error-icon::before {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            .error-icon::after {
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+
+        .success-icon {
+            border: 2px solid #6abf69;
+            position: relative;
+        }
+
+            .success-icon::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 14px;
+                height: 14px;
+                border: 2px solid #6abf69;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+        #grammar-content {
+            flex: 1;
+            overflow-y: auto;
+            /* ✅ 滾軸只在這裡 */
+            box-sizing: border-box;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <a href="../vocab/vocab.html">単語</a>
+        <a href="grammar.html" class="active">文型</a>
+        <a href="../record/record.html">記錄</a>
+        <p id="vid" style="color: #ccc;">V1.0.31</p>
+    </div>
+    <div class="inbody">
+        <div class="sidebar">
+            <ul id="category-list"></ul>
+        </div>
+
+        <div class="main">
+            <div class="top-bar">
+                <button id="toggle-sidebar">☰</button>
+                <div class="search-box">
+                    <input type="text" id="search-input" name="search" placeholder="搜尋文法關鍵詞…" oninput="search(this.value)">
+
+                </div>
+            </div>
+            <div id="grammar-content"></div>
+        </div>
+    </div>
+    <script src="../../js/getVersion.js"></script>
+    <script src="../../js/func.js"></script>
+    <script src="grammar.js"></script>
+</body>
+
+</html>

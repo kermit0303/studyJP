@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>事件紀錄表</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<style>
+    /* 讓第一欄 (日期) 縮小 */
+.table-jp th:first-child,
+.table-jp td:first-child {
+  width: 160px;   /* 依需求調整，比如 120px / 150px */
+  white-space: nowrap; /* 避免自動換行 */
+}
+
+</style>
+<body>
+  <div class="toolbar">
+    <a href="../vocab/vocab.html">単語</a>
+    <a href="../grammar/grammar.html">文型</a>
+    <a href="record.html" class="active">記錄</a>
+    <p id="vid" style="color: #ccc;">V1.0.31</p>
+  </div>
+
+  <div class="content">
+    <h1>事件紀錄</h1>
+
+    <!-- 表格 -->
+    <table class="table-jp" id="recordTable">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>紀錄</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 這裡由 JS 動態填入 -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 引入資料 -->
+  <script src="../../js/getVersion.js"></script>
+  <script src="record/record-data-1.js"></script>
+
+  <!-- 渲染表格 -->
+  <script>
+  function renderTable(data) {
+    const tbody = document.getElementById("recordTable").querySelector("tbody");
+    tbody.innerHTML = ""; // 清空
+
+    if (data && data.tables && data.tables[0].rows) {
+      data.tables[0].rows.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.date}</td>
+          <td>
+            ${row.note}
+            ${row.audio ? `<button onclick="playAudio('${row.audio}')">▶️</button>` : ""}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  // 播放 mp3
+  function playAudio(fileName) {
+    const audio = new Audio(`audio/${fileName}`);
+    audio.play();
+  }
+
+  // 預設載入資料
+  renderTable(window.recordData1);
+</script>
+
+</body>
+</html>

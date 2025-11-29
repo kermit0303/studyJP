@@ -1,0 +1,33 @@
+body {
+  background: #eae2d6;
+}
+
+.book {
+  background: #fffaf0;
+  border: 2px solid #8b5e3c;
+  padding: 40px 60px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+}
+
+#title {
+  border-bottom: 2px solid #c0a16b;
+  padding-bottom: 10px;
+  color: #5b3b16;
+}
+
+#content {
+  color: #333;
+}
+
+.choice-btn {
+  background: linear-gradient(to bottom, #d3b98d, #b8935b);
+  border: 2px solid #8b5e3c;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.choice-btn:hover {
+  background: linear-gradient(to bottom, #b8935b, #d3b98d);
+  color: #5b3b16;
+}

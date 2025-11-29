@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隨機出題系統</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    input[type="text"].title-input {
+      padding: 10px;
+      font-size: 16px;
+      width: 50%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px;
+    }
+
+    th.menu-col, td.menu-col {
+      width: 70%;
+    }
+
+    th.price-col, td.price-col {
+      width: 30%;
+    }
+
+    td input[type="text"] {
+      width: 95%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px 10px 10px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: #0056b3;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #02264d;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      input[type="text"].title-input {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+
+  <h2>菜單編輯器</h2>
+
+  <label for="menuTitle">標題：</label>
+  <input type="text" id="menuTitle" class="title-input" placeholder="輸入菜單標題...">
+
+  <br>
+
+  <button onclick="addRow()">新增項目</button>
+  <button onclick="exportExcel()">匯出 Excel</button>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th class="menu-col">菜單</th>
+        <th class="price-col">金額</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 資料列將會在此產生 -->
+    </tbody>
+  </table>
+
+  <br><br>
+  <input type="file" id="excelFile" onchange="importExcel()" accept=".xlsx" />
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="xlsjs.js"></script>
+</body>
+</html>
