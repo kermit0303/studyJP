@@ -15,6 +15,13 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+ V1.0.105
+- [Improvement] 新增11/25
+- [Improvement] 修改網址
+ 
+ V1.0.104
+- [Improvement] 新增資料
+ 
  V1.0.103
 - [Improvement] 新增體重
  
