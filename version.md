@@ -5,6 +5,7 @@
  [[icon-important|]]
  [[icon|success-icon]]
  [[icon|error-icon]]
+ [[strike|を]]
  ⬇
  「原形」
  →
@@ -15,6 +16,10 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+ V1.0.106
+- [Improvement] 新增12/02-12/16
+- [Improvement] 新增爸的體重
+
  V1.0.105
 - [Improvement] 新增11/25
 - [Improvement] 修改網址
