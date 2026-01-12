@@ -16,8 +16,12 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+  V1.0.108
+- [Improvement] 新增en
+- [Improvement] 新增jp record 的滾軸
+
  V1.0.107
-- [Improvement] 更新錯誤
+- [BugFix] 更新錯誤
 
  V1.0.106
 - [Improvement] 新增12/02-01/06

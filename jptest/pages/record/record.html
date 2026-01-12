@@ -9,10 +9,31 @@
     /* 讓第一欄 (日期) 縮小 */
 .table-jp th:first-child,
 .table-jp td:first-child {
-  width: 160px;   /* 依需求調整，比如 120px / 150px */
+  width: 200px;   /* 依需求調整，比如 120px / 150px */
   white-space: nowrap; /* 避免自動換行 */
 }
+.table-jp {
+  margin-bottom: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
 
+.table-jp thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-jp tbody {
+  display: block;          
+  height: calc(100vh - 230px); 
+  overflow-y: auto;        
+}
+.table-jp tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
 </style>
 <body>
   <div class="toolbar">
@@ -26,24 +47,23 @@
     <h1>事件紀錄</h1>
 
     <!-- 表格 -->
-    <table class="table-jp" id="recordTable">
-      <thead>
-        <tr>
-          <th>日期</th>
-          <th>紀錄</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- 這裡由 JS 動態填入 -->
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table class="table-jp" id="recordTable">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>紀錄</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- 引入資料 -->
   <script src="../../js/getVersion.js"></script>
   <script src="record/record-data-1.js"></script>
 
-  <!-- 渲染表格 -->
   <script>
   function renderTable(data) {
     const tbody = document.getElementById("recordTable").querySelector("tbody");
