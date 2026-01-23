@@ -1,4 +1,3 @@
-
 // ========= 核心渲染函式 =========
 function renderFurigana(jpArr) {
     return jpArr.map(token => {

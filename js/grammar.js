@@ -3,7 +3,6 @@ const categoryList = document.getElementById('category-list');
 const grammarContent = document.getElementById('grammar-content');
 
 // ========= 全局設定 =========
-const maxBatch = 5;  // 假設最大有10批次，可依需求調整
 let currentBatch = 1;
 
 const loadedTitles = new Set();
@@ -198,22 +197,34 @@ function renderGrammarItem(item, batchIndex, idx) {
 
       const title = document.createElement('div');
       title.className = 'example-title';
-      title.textContent = `範例 ${ex.id}`;
+      title.textContent = `${ex.id}`;
       exampleBlock.appendChild(title);
 
-      ex.dia.forEach(d => {
-        const jp = document.createElement('p');
-        jp.className = 'exam-jp';
-        jp.innerHTML = renderTagged(renderFurigana(d.jp), item);
-        exampleBlock.appendChild(jp);
+      if(ex.dia){
+        ex.dia.forEach(d => {
+          
+          const jp = document.createElement('p');
+          jp.className = 'exam-jp';
 
-        const zh = document.createElement('p');
-        zh.className = 'exam-zh';
-        if (d.zh) {
-          zh.innerHTML = renderTagged(d.zh, item);
-          exampleBlock.appendChild(zh);
-        }
-      });
+          if (d.en && d.en.length > 0) {
+            jp.innerHTML = renderTagged(d.en, item);
+            exampleBlock.appendChild(jp);
+          }
+          else if(d.jp)
+          {
+            jp.innerHTML = renderTagged(renderFurigana(d.jp), item);
+            exampleBlock.appendChild(jp);
+          }
+
+          if (d.zh) {
+            const zh = document.createElement('p');
+            zh.className = 'exam-zh';
+          
+            zh.innerHTML = renderTagged(d.zh, item);
+            exampleBlock.appendChild(zh);
+          }
+        });
+      }
       exContainer.appendChild(exampleBlock);
     });
     section.appendChild(exContainer);

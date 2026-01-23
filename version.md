@@ -6,6 +6,7 @@
  [[icon|success-icon]]
  [[icon|error-icon]]
  [[strike|を]]
+ 我目前想練習英文去考托福，可以跟我對話跟給我英文單字練習嗎?或是給我一些口語化的說法跟建議，也可以幫我翻譯我想說的之後再回答我
  ⬇
  「原形」
  →
@@ -16,6 +17,13 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+  V1.0.111
+- [Improvement] 新增units 讓專案都放在units
+- [Improvement] example的dia 是否存在，及jp是否存在。
+
+  V1.0.110
+- [Improvement] 新增 日文課 1/20
+
   V1.0.109
 - [BugFix] 語法修正
 - [BugFix] en修正
