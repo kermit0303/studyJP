@@ -17,12 +17,16 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+ 
+  V1.0.112
+- [Improvement] 新增日文1/27
+
   V1.0.111
-- [Improvement] 新增units 讓專案都放在units
-- [Improvement] example的dia 是否存在，及jp是否存在。
+- [Improvement] 修改架構
 
   V1.0.110
-- [Improvement] 新增 日文課 1/20
+- [Improvement] 新增units 讓專案都放在units
+- [Improvement] example的dia 是否存在，及jp是否存在。
 
   V1.0.109
 - [BugFix] 語法修正

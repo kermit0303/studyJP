@@ -1,4 +1,4 @@
-document.getElementById("vid").textContent = "V1.0.109";
+document.getElementById("vid").textContent = "V1.0.111";
 // ========= 核心渲染函式 =========
 function renderFurigana(jpArr) {
     return jpArr.map(token => {
