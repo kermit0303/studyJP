@@ -1,4 +1,31 @@
 window.grammarData6 = [
+{
+        "tile": "そして",
+        "desp": "(放在第2句的句首)而且",
+        "trans":"[[icon-important|只有正面的意思]]",
+        "exam": [
+            {
+                "id": 1,
+                "dia": [
+                    {
+                        "jp": [
+                            {
+                                "k": "[[blue-underline|これはおいしいです。|第一句]][[blue-underline|[[blue|そして]]|第二句的句首]]、"
+                            },
+                            {
+                                "k": "安",
+                                "f": "やす"
+                            },
+                            {
+                                "k": "いです。"
+                            }
+                        ],
+                        "zh": "這個好吃，[[blue|而且]]便宜。"
+                    }
+                ]
+            }
+        ]
+    },
     {
         "tile": [
             {
