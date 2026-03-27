@@ -448,3 +448,18 @@ h2::before {
     border-radius: 4px;
     font-weight: bold;
 }
+.jp-button-green {
+    background-color: #e6f0ea;
+    color: #3e5c4b;
+    border: 1px solid #c8ddd1;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.jp-button-green:hover {
+    background-color: #d8e8df;
+    box-shadow: 0 4px 12px rgba(62,92,75,0.15);
+}

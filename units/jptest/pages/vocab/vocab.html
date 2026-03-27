@@ -76,12 +76,51 @@ table caption {
 
         </div>
       </div>
+
+    <button id="downloadWordBtn" class="jp-button-green">下載檔案 （記得使用瀏覽器）</button>
       <div id="word-list"></div>
     </div>
   </div>
-  
+  <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
   <script src="../../js/func.js"></script>
   <script src="vocab.js"></script>
+  <script>
+function exportToWord() {
+    const content = document.getElementById("grammar-content").innerHTML;
+
+    const fullHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office'
+              xmlns:w='urn:schemas-microsoft-com:office:word'
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset="utf-8">
+            <title>Export to DOCX</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                h1 { color: #2c3e50; }
+                p { font-size: 14px; }
+                ul { margin-left: 20px; }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `;
+
+    const blob = window.htmlDocx.asBlob(fullHtml);
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "grammar.docx";
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+</script>
 </body>
 
 </html>
