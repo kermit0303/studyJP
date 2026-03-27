@@ -84,39 +84,23 @@ table caption {
   <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
   <script src="../../js/func.js"></script>
   <script src="vocab.js"></script>
-  <script>
+  
+<script>
 function exportToWord() {
     const content = document.getElementById("word-list").innerHTML;
+    const preHtml = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+            xmlns:w='urn:schemas-microsoft-com:office:word' 
+            xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset="utf-8"></head><body>`;
+    const postHtml = "</body></html>";
+    const blob = new Blob(['\ufeff', preHtml + content + postHtml], { type: 'application/msword' });
 
-    const fullHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office'
-              xmlns:w='urn:schemas-microsoft-com:office:word'
-              xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset="utf-8">
-            <title>Export to DOCX</title>
-            <style>
-                body { font-family: Arial, sans-serif; }
-                h1 { color: #2c3e50; }
-                p { font-size: 14px; }
-                ul { margin-left: 20px; }
-            </style>
-        </head>
-        <body>
-            ${content}
-        </body>
-        </html>
-    `;
-
-    const blob = window.htmlDocx.asBlob(fullHtml);
-
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = "grammar.docx";
-
+    link.download = 'grammar.doc';
     document.body.appendChild(link);
     link.click();
-
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
 }
