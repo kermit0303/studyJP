@@ -49,7 +49,7 @@ body {
     /* 必須加 */
     bottom: 5px;
     /* 貼近底部 */
-    left: 50%;
+    left: 80%;
     /* 水平置中 */
     transform: translateX(-50%);
     /* 調整水平置中 */

@@ -174,7 +174,7 @@ function loadNextVocabPage() {
     return;
   }
   const script = document.createElement('script');
-  script.src = `vocabData/vocab-data-${currentPage}.js`;
+  script.src = `${files}vocabData/vocab-data-${currentPage}.js`;
 
   script.onload = () => {
     const pageData = window[`vocabData${currentPage}`];

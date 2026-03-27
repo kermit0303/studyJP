@@ -1,10 +1,56 @@
-// ========= 左側與右側 DOM =========
-const categoryList = document.getElementById('category-list');
-const grammarContent = document.getElementById('grammar-content');
-
-// ========= 全局設定 =========
+let categoryList;
+let grammarContent;
 const maxBatch = 6;  // 假設最大有10批次，可依需求調整
 let currentBatch = 1;
+let minLoadedBatch = maxBatch; // 最小已載入 batch
+
+// ========= 左側與右側 DOM =========
+document.addEventListener("DOMContentLoaded", () => {
+  categoryList = document.getElementById('category-list');
+  grammarContent = document.getElementById('grammar-content');
+
+  if (!categoryList || !grammarContent) {
+    console.error('找不到元素！');
+    return;
+  }
+
+  // ========= 跳轉到某一頁 =========
+  categoryList.addEventListener('click', async (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    e.preventDefault();
+
+    const batchIndex = parseInt(link.dataset.batchLink);
+
+    // 若該批次尚未載入 → 立即載入
+    if (!loadedContentsSet.has(batchIndex)) {
+      console.log(`載入缺失批次 ${batchIndex}`);
+      grammarContent.innerHTML = ''; // 清空或顯示 loading
+      await loadBatch(batchIndex);
+    }
+
+    // 然後滾到指定區塊
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+
+    // 接著釋放太遠的 batch，只留前後幾頁
+    manageBatchDom(batchIndex);
+  });
+
+  // ========= 滾動監聽，滾動到底部時載入下一批 =========
+  grammarContent.addEventListener('scroll', async () => {
+    if (grammarContent.scrollTop + grammarContent.clientHeight >= grammarContent.scrollHeight - 600) {
+      if (minLoadedBatch <= 1) return;
+
+      const nextBatch = minLoadedBatch - 1;
+      await loadBatch(nextBatch);
+      minLoadedBatch = nextBatch;
+    }
+  });
+
+});
+// ========= 全局設定 =========
+
 
 const loadedTitles = new Set();
 const loadedContents = new Set();
@@ -13,7 +59,7 @@ const loadedContentsSet = new Set();
 // ========= 載入標題，只載入左側清單 =========
 function preloadTitles() {
   for (let i = maxBatch; i >= 1; i--) {
-    loadDataFile(`grammardata/grammar-data-${i}.js`, i, true);
+    loadDataFile(`${files}grammardata/grammar-data-${i}.js`, i, true);
   }
 }
 
@@ -21,7 +67,7 @@ function preloadTitles() {
 async function loadBatch(batchIndex) {
   if (loadedContentsSet.has(batchIndex)) return;
 
-  await loadDataFile(`grammardata/grammar-data-${batchIndex}.js`, batchIndex, false);
+  await loadDataFile(`${files}grammardata/grammar-data-${batchIndex}.js`, batchIndex, false);
   loadedContentsSet.add(batchIndex);
   manageBatchDom(batchIndex);
 
@@ -119,28 +165,6 @@ function renderSidebarOnly(item, batchIndex, idx) {
   }
 }
 
-// ========= 跳轉到某一頁 =========
-categoryList.addEventListener('click', async (e) => {
-  const link = e.target.closest('a');
-  if (!link) return;
-  e.preventDefault();
-
-  const batchIndex = parseInt(link.dataset.batchLink);
-
-  // 若該批次尚未載入 → 立即載入
-  if (!loadedContentsSet.has(batchIndex)) {
-    console.log(`載入缺失批次 ${batchIndex}`);
-    grammarContent.innerHTML = ''; // 清空或顯示 loading
-    await loadBatch(batchIndex);
-  }
-
-  // 然後滾到指定區塊
-  const target = document.querySelector(link.getAttribute('href'));
-  if (target) target.scrollIntoView({ behavior: 'smooth' });
-
-  // 接著釋放太遠的 batch，只留前後幾頁
-  manageBatchDom(batchIndex);
-});
 
 // ========= 渲染右側內容 =========
 function renderGrammarItem(item, batchIndex, idx) {
@@ -201,9 +225,9 @@ function renderGrammarItem(item, batchIndex, idx) {
       title.textContent = `範例 ${ex.id}`;
       exampleBlock.appendChild(title);
 
-      if(ex.dia){
+      if (ex.dia) {
         ex.dia.forEach(d => {
-          
+
           const jp = document.createElement('p');
           jp.className = 'exam-jp';
 
@@ -211,8 +235,7 @@ function renderGrammarItem(item, batchIndex, idx) {
             jp.innerHTML = renderTagged(d.en, item);
             exampleBlock.appendChild(jp);
           }
-          else if(d.jp)
-          {
+          else if (d.jp) {
             jp.innerHTML = renderTagged(renderFurigana(d.jp), item);
             exampleBlock.appendChild(jp);
           }
@@ -220,7 +243,7 @@ function renderGrammarItem(item, batchIndex, idx) {
           if (d.zh) {
             const zh = document.createElement('p');
             zh.className = 'exam-zh';
-          
+
             zh.innerHTML = renderTagged(d.zh, item);
             exampleBlock.appendChild(zh);
           }
@@ -242,17 +265,6 @@ function renderGrammarItem(item, batchIndex, idx) {
   grammarContent.appendChild(section);
 }
 
-// ========= 滾動監聽，滾動到底部時載入下一批 =========
-let minLoadedBatch = maxBatch; // 最小已載入 batch
-grammarContent.addEventListener('scroll', async () => {
-  if (grammarContent.scrollTop + grammarContent.clientHeight >= grammarContent.scrollHeight - 600) {
-    if (minLoadedBatch <= 1) return;
-
-    const nextBatch = minLoadedBatch - 1;
-    await loadBatch(nextBatch);
-    minLoadedBatch = nextBatch;
-  }
-});
 
 // ========= 頁面初始化 =========
 insertGlobalNoteMarker();
@@ -287,17 +299,17 @@ toggleBtn.addEventListener('click', () => {
 
 // ========= 共用同一個箭頭標記 =========
 function insertGlobalNoteMarker() {
-    if (document.getElementById('global-note-marker')) return; // 已經插入就跳過
+  if (document.getElementById('global-note-marker')) return; // 已經插入就跳過
 
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("style", "height:0;width:0;position:absolute");
-    svg.innerHTML = `
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("style", "height:0;width:0;position:absolute");
+  svg.innerHTML = `
         <defs>
             <marker id="global-note-arrowhead" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
                 <polygon points="0 0, 6 3, 0 6" fill="#c8a98b" />
             </marker>
         </defs>
     `;
-    svg.id = 'global-note-marker';
-    document.body.appendChild(svg);
+  svg.id = 'global-note-marker';
+  document.body.appendChild(svg);
 }

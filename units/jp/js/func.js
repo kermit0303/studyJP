@@ -1,4 +1,11 @@
-document.getElementById("vid").textContent = "V1.0.114 更新:03/25";
+document.addEventListener("DOMContentLoaded", () => {
+    const vid = document.getElementById("vid");
+    if (vid) {
+        vid.textContent = "V1.0.115 更新:03/25";
+    }
+});
+
+var files='';
 // ========= 核心渲染函式 =========
 function renderFurigana(jpArr) {
     return jpArr.map(token => {

@@ -14,10 +14,34 @@
 </head>
 <body>
       
-<iframe 
-  src="https://absent-fitting-calculations-explicit.trycloudflare.com"
-  style="width:100vw; height:100vh; border:none;">
-</iframe>
+<div id="fallback" style="display:none;">
+  ❌ 服務掛了，顯示替代畫面
+</div>
+
+<iframe id="gameFrame" style="width:100vw; height:100vh; border:none;"></iframe>
+<script>
+const url = "https://absent-fitting-calculations-explicit.trycloudflare.com";
+const iframe = document.getElementById("gameFrame");
+const fallback = document.getElementById("fallback");
+
+let loaded = false;
+
+// 載入成功
+iframe.onload = () => {
+  loaded = true;
+};
+
+// 先設定 src
+iframe.src = url;
+
+// 設 timeout（例如 5 秒）
+setTimeout(() => {
+  if (!loaded) {
+    iframe.style.display = "none";
+    fallback.style.display = "block";
+  }
+}, 5000);
+</script>
 
     
 </body>
