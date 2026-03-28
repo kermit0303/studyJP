@@ -55,7 +55,6 @@ table caption {
 
   </style>
 </head>
-
 <body>
 
   <div class="toolbar">
@@ -81,7 +80,6 @@ table caption {
       <div id="word-list"></div>
     </div>
   </div>
-  <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
   <script src="../../js/func.js"></script>
   <script src="vocab.js"></script>
   
@@ -109,6 +107,7 @@ function exportToWordV2() {
 
 <script>
 function exportToWord() {
+  console.log(window.htmlDocx);
     const element = document.getElementById("word-list");
 
     if (!element) {
