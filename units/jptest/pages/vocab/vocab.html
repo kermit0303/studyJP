@@ -86,7 +86,7 @@ table caption {
   <script src="vocab.js"></script>
   
 <script>
-function exportToWord() {
+function exportToWordV2() {
     const content = document.getElementById("word-list").innerHTML;
     const preHtml = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' 
@@ -102,6 +102,50 @@ function exportToWord() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+</script>
+<script>
+function exportToWord() {
+    const content = document.getElementById("word-list").innerHTML;
+
+    const fullHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office'
+              xmlns:w='urn:schemas-microsoft-com:office:word'
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset="utf-8">
+            <title>Word Export</title>
+            <style>
+                body {
+                    font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+                    line-height: 1.6;
+                }
+                h1, h2 {
+                    color: #4a3f35;
+                }
+                p {
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `;
+
+    // ⭐ 這行是關鍵（真正 docx）
+    const blob = window.htmlDocx.asBlob(fullHtml);
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'grammar.docx'; // ✅ 真的 docx
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
     URL.revokeObjectURL(link.href);
 }
 </script>
