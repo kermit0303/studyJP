@@ -105,48 +105,62 @@ function exportToWordV2() {
     URL.revokeObjectURL(link.href);
 }
 </script>
+<script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+
 <script>
 function exportToWord() {
-    const content = document.getElementById("word-list").innerHTML;
+    const element = document.getElementById("word-list");
+
+    if (!element) {
+        alert("找不到 #word-list");
+        return;
+    }
+
+    const content = element.innerHTML.trim();
+
+    if (!content) {
+        alert("內容是空的！");
+        return;
+    }
 
     const fullHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office'
-              xmlns:w='urn:schemas-microsoft-com:office:word'
-              xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset="utf-8">
-            <title>Word Export</title>
-            <style>
-                body {
-                    font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
-                    line-height: 1.6;
-                }
-                h1, h2 {
-                    color: #4a3f35;
-                }
-                p {
-                    font-size: 14px;
-                }
-            </style>
-        </head>
-        <body>
-            ${content}
-        </body>
-        </html>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {
+                font-family: Arial, "Noto Sans JP", sans-serif;
+                line-height: 1.6;
+                padding: 20px;
+            }
+            h1 { font-size: 20px; }
+            p { font-size: 14px; }
+        </style>
+    </head>
+    <body>
+        ${content}
+    </body>
+    </html>
     `;
 
-    // ⭐ 這行是關鍵（真正 docx）
-    const blob = window.htmlDocx.asBlob(fullHtml);
+    try {
+        const blob = window.htmlDocx.asBlob(fullHtml);
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'grammar.docx'; // ✅ 真的 docx
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "grammar.docx";
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-    URL.revokeObjectURL(link.href);
+        URL.revokeObjectURL(link.href);
+
+    } catch (e) {
+        console.error(e);
+        alert("匯出失敗");
+    }
 }
 </script>
 </body>
