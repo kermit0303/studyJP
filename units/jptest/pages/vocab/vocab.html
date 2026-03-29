@@ -6,7 +6,6 @@
   <title>詞彙工具</title>
   <link rel="stylesheet" href="../../css/style.css">
   <style>
-
     .inbody {
       margin: 0;
       font-family: 'Noto Serif TC', serif;
@@ -25,36 +24,42 @@
       box-sizing: border-box;
       padding: 10px;
     }
+
     /* 日系風格表格標題 */
-table caption {
-  margin-top: 30px;
-  text-align: left;            
-  font-family: 'Noto Serif JP', 'Noto Serif TC', serif;
-  font-size: 30px;             
-  font-weight: 600;            /* 稍微加粗 */
-  color: #2c3e50;              
-  letter-spacing: 0.05em;      
-  margin-bottom: 0.5em;        /* 與表格保持距離 */
-  border-bottom: 2px solid #e67e22; /* 加底線強調 */
-  padding-bottom: 0.2em;
-}
+    table caption {
+      margin-top: 30px;
+      text-align: left;
+      font-family: 'Noto Serif JP', 'Noto Serif TC', serif;
+      font-size: 30px;
+      font-weight: 600;
+      /* 稍微加粗 */
+      color: #2c3e50;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5em;
+      /* 與表格保持距離 */
+      border-bottom: 2px solid #e67e22;
+      /* 加底線強調 */
+      padding-bottom: 0.2em;
+    }
 
-table caption::before {
-  content: "§ ";
-  font-size: 28px;
-  vertical-align: middle;
-  color: #e67e22; 
-}
+    table caption::before {
+      content: "§ ";
+      font-size: 28px;
+      vertical-align: middle;
+      color: #e67e22;
+    }
 
-/* 可選：給 caption 淡背景 */
-table caption {
-  background: #fdf6ec;   /* 淡米橙背景 */
-  padding: 0.4em 0.6em;
-  border-radius: 8px;    /* 圓角 */
-}
-
+    /* 可選：給 caption 淡背景 */
+    table caption {
+      background: #fdf6ec;
+      /* 淡米橙背景 */
+      padding: 0.4em 0.6em;
+      border-radius: 8px;
+      /* 圓角 */
+    }
   </style>
 </head>
+
 <body>
 
   <div class="toolbar">
@@ -76,83 +81,12 @@ table caption {
         </div>
       </div>
 
-        <button onclick="exportToWord()" class="jp-button-green">下載檔案 （記得使用瀏覽器）</button>
       <div id="word-list"></div>
     </div>
   </div>
   <script src="../../js/func.js"></script>
   <script src="vocab.js"></script>
-  
-<script>
-function exportToWordV2() {
-    const content = document.getElementById("word-list").innerHTML;
-    const preHtml = `
-      <html xmlns:o='urn:schemas-microsoft-com:office:office' 
-            xmlns:w='urn:schemas-microsoft-com:office:word' 
-            xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset="utf-8"></head><body>`;
-    const postHtml = "</body></html>";
-    const blob = new Blob(['\ufeff', preHtml + content + postHtml], { type: 'application/msword' });
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'grammar.doc';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
-}
-</script>
-<script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
-
-<script>
-function exportToWord() {
-  console.log(window.htmlDocx);
-    const element = document.getElementById("word-list");
-
-    if (!element) {
-        alert("找不到 #word-list");
-        return;
-    }
-
-    const content = element.innerHTML.trim();
-
-    if (!content) {
-        alert("內容是空的！");
-        return;
-    }
-
-    const fullHtml = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        ${content}
-    </body>
-    </html>
-    `;
-
-    try {
-        const blob = window.htmlDocx.asBlob(fullHtml);
-
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "grammar.docx";
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(link.href);
-
-    } catch (e) {
-        console.error(e);
-        alert("匯出失敗");
-    }
-}
-</script>
 </body>
 
 </html>

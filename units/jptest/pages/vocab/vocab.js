@@ -1,16 +1,144 @@
 let currentPage = 1;
-let isLoading = false;
-let maxpage = 1;
-const container = document.getElementById('word-list');
+let maxpage = 3;
+let minLoadedBatch = maxpage;
 
-// 左側
-const categoryList = document.getElementById('category-list');
-// 先建立一張大表
-const table = document.createElement("table");
-table.className = "table-jp";
-const tbody = document.createElement("tbody");
-table.appendChild(tbody);
-container.appendChild(table);
+let categoryList;
+let container;
+
+
+// ========= 左側與右側 DOM =========
+document.addEventListener("DOMContentLoaded", () => {
+  container = document.getElementById('word-list');
+  categoryList = document.getElementById('category-list');
+
+
+  // ========= 滾動監聽，滾動到底部時載入下一批 =========
+  container.addEventListener('scroll', async () => {
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 200) {
+      if (minLoadedBatch <= 1) return;
+
+      const nextBatch = minLoadedBatch - 1;
+      await loadBatch(nextBatch);
+      minLoadedBatch = nextBatch;
+    }
+  });
+});
+
+// ========= 全局設定 =========
+
+const loadedTitles = new Set();
+const loadedContents = new Set();
+const loadedContentsSet = new Set();
+
+
+// ========= 載入標題，只載入左側清單 =========
+function preloadTitles() {
+  for (let i = maxpage; i >= 1; i--) {
+    loadDataFile(`${files}vocabData/vocab-data-${i}.js`, i, true);
+  }
+}
+
+// ========= 主要載入批次內容 =========
+async function loadBatch(batchIndex) {
+  if (loadedContentsSet.has(batchIndex)) return;
+
+  await loadDataFile(`${files}vocabData/vocab-data-${batchIndex}.js`, batchIndex, false);
+  loadedContentsSet.add(batchIndex);
+  manageBatchDom(batchIndex);
+
+}
+
+
+// ========= 管理DOM，控制只保留當前及前後批次 =========
+async function manageBatchDom(currentIndex) {
+  const keep = [currentIndex - 1, currentIndex, currentIndex + 1];
+
+  // 1️⃣ 補齊缺失 batch
+  for (let idx of keep) {
+    if (idx >= 1 && idx <= maxpage && !loadedContentsSet.has(idx)) {
+      await loadBatch(idx);
+    }
+  }
+
+  // 2️⃣ 刪除不在 keep 的 batch
+  document.querySelectorAll('.batch-container').forEach(el => {
+    const idx = parseInt(el.dataset.batchIndex);
+    if (!keep.includes(idx)) {
+      el.remove();
+      loadedContentsSet.delete(idx);
+    }
+  });
+}
+// ========= 延遲載入資料的函式 =========
+function loadDataFile(filePath, batchIndex, titlesOnly = false) {
+  return new Promise((resolve, reject) => {
+    // 判斷是否已經載入過
+    if (titlesOnly && loadedTitles.has(batchIndex)) {
+      resolve();
+      return;
+    }
+    if (!titlesOnly && loadedContents.has(batchIndex)) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = filePath;
+    script.async = false;
+    script.defer = false;
+    script.onload = () => {
+      const pageData = window[`vocabData${batchIndex}`];
+      if (pageData) {
+        if (pageData.tables) {
+          pageData.tables.forEach(table => {
+            if (table.header) {
+              const sectionIndex = batchCounter++;
+              if (table.caption) {
+                createCaption(table.caption, sectionIndex, table);
+              }
+              // 1️⃣ 用 renderTable 生成完整 HTML
+              const tableHTML = renderTagged(renderTable(table), table); // 如果需要，可以傳 item 或 table
+
+              // 2️⃣ 用 wrapper 包起來
+              const wrapper = document.createElement('div');
+              wrapper.innerHTML = tableHTML;
+
+              const section = document.createElement('section');
+              section.id = `section-${sectionIndex}`;
+              section.dataset.batch = batchIndex;
+              // 3️⃣ 放到 section，再放到 container
+              section.appendChild(wrapper);
+              container.appendChild(section);
+
+            }
+            else {
+              const rows = table.rows || [];
+              const columns = table.columns || 3;
+              appendVocabRows(rows, columns, table.caption, table);  // 可以順便傳 caption
+            }
+          });
+        }
+
+        if (titlesOnly) {
+          loadedTitles.add(batchIndex);
+        } else {
+          loadedContents.add(batchIndex);
+        }
+      } else {
+        console.warn('No more data');
+      }
+
+      resolve();
+    };
+
+    script.onerror = () => {
+      console.error(`無法載入 ${filePath}`);
+      reject();
+    };
+    document.body.appendChild(script);
+  });
+}
+
 
 // 單字轉成 HTML → 根據是否有 colspan 產生 cell
 function renderVocabItemAsCells(item) {
@@ -53,19 +181,19 @@ function renderVocabItemAsCells(item) {
   return [`<td>${content}</td>`];
 }
 let batchCounter = 0;
-function appendVocabRows(data, columns = 3, caption = "",item) {
-  const batchIndex = batchCounter++;
+function appendVocabRows(data, columns = 3, caption = "", item) {
+  const sectionIndex = batchCounter++;
   const container = document.getElementById("word-list");
 
   const section = document.createElement('section');
-  section.id = `section-${batchIndex}`;
-  section.dataset.batch = batchIndex;
+  section.id = `section-${sectionIndex}`;
+  section.dataset.batch = sectionIndex;
 
   const table = document.createElement("table");
   table.className = "table-jp";
 
   if (caption) {
-    const cap = createCaption(caption, batchIndex,item);
+    const cap = createCaption(caption, sectionIndex, item);
     table.appendChild(cap);
   }
 
@@ -106,7 +234,7 @@ function appendVocabRows(data, columns = 3, caption = "",item) {
 }
 
 
-function createCaption(captionText, batchIndex,item) {
+function createCaption(captionText, batchIndex, item) {
   // 1️⃣ 建立 caption 元素
   const cap = document.createElement("caption");
   cap.innerHTML = renderMaybeFurigana(captionText);
@@ -156,75 +284,6 @@ function renderMaybeFurigana(textOrJson) {
   return textOrJson;
 }
 
-
-// 第一次自動載入
-loadNextVocabPage();
-
-// Infinite scroll
-window.addEventListener('scroll', () => {
-  const bottomReached = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
-  if (bottomReached) {
-    loadNextVocabPage();
-  }
-});
-function loadNextVocabPage() {
-  if (isLoading) return;
-  isLoading = true;
-  if (currentPage > maxpage) {
-    return;
-  }
-  const script = document.createElement('script');
-  script.src = `${files}vocabData/vocab-data-${currentPage}.js`;
-
-  script.onload = () => {
-    const pageData = window[`vocabData${currentPage}`];
-    if (pageData) {
-      if (pageData.tables) {
-        pageData.tables.forEach(table => {
-          if (table.header) {
-            const batchIndex = batchCounter++;
-            if (table.caption) {
-              createCaption(table.caption, batchIndex,table);
-            }
-            // 1️⃣ 用 renderTable 生成完整 HTML
-            const tableHTML = renderTagged(renderTable(table), table); // 如果需要，可以傳 item 或 table
-
-            // 2️⃣ 用 wrapper 包起來
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = tableHTML;
-
-            const section = document.createElement('section');
-            section.id = `section-${batchIndex}`;
-            section.dataset.batch = batchIndex;
-            // 3️⃣ 放到 section，再放到 container
-            section.appendChild(wrapper);
-            container.appendChild(section);
-
-          }
-          else {
-            const rows = table.rows || [];
-            const columns = table.columns || 3;
-            appendVocabRows(rows, columns, table.caption,table);  // 可以順便傳 caption
-          }
-        });
-      }
-      currentPage++;
-      isLoading = false;
-    } else {
-      console.warn('No more data');
-      isLoading = false;
-    }
-  };
-
-  script.onerror = () => {
-    console.error('Failed to load vocab page');
-    isLoading = false;
-  };
-
-  document.body.appendChild(script);
-}
-
-
 // ========= 側邊欄開關 =========
 const toggleBtn = document.getElementById('toggle-sidebar');
 const sidebar = document.querySelector('.sidebar');
@@ -234,9 +293,24 @@ toggleBtn.addEventListener('click', () => {
 });
 
 
-// ========= 滾動監聽，滾動到底部時載入下一批 =========
-container.addEventListener('scroll', () => {
-  if (container.scrollTop + container.clientHeight >= container.scrollHeight - 200) {
-    loadNextVocabPage();
-  }
-});
+// ========= 頁面初始化 =========
+insertGlobalNoteMarker();
+preloadTitles();
+loadBatch(maxpage);
+
+// ========= 共用同一個箭頭標記 =========
+function insertGlobalNoteMarker() {
+  if (document.getElementById('global-note-marker')) return; // 已經插入就跳過
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("style", "height:0;width:0;position:absolute");
+  svg.innerHTML = `
+        <defs>
+            <marker id="global-note-arrowhead" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+                <polygon points="0 0, 6 3, 0 6" fill="#c8a98b" />
+            </marker>
+        </defs>
+    `;
+  svg.id = 'global-note-marker';
+  document.body.appendChild(svg);
+}
