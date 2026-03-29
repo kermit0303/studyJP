@@ -5,6 +5,7 @@ let minLoadedBatch = maxpage;
 let categoryList;
 let container;
 
+let batchCounter = 0;
 
 // ========= 左側與右側 DOM =========
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,6 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
       minLoadedBatch = nextBatch;
     }
   });
+  // ========= 頁面初始化 =========
+  insertGlobalNoteMarker();
+  preloadTitles();
+  loadBatch(maxpage);
 });
 
 // ========= 全局設定 =========
@@ -180,7 +185,6 @@ function renderVocabItemAsCells(item) {
     </div>`;
   return [`<td>${content}</td>`];
 }
-let batchCounter = 0;
 function appendVocabRows(data, columns = 3, caption = "", item) {
   const sectionIndex = batchCounter++;
   const container = document.getElementById("word-list");
@@ -292,11 +296,6 @@ toggleBtn.addEventListener('click', () => {
   sidebar.classList.toggle('show');
 });
 
-
-// ========= 頁面初始化 =========
-insertGlobalNoteMarker();
-preloadTitles();
-loadBatch(maxpage);
 
 // ========= 共用同一個箭頭標記 =========
 function insertGlobalNoteMarker() {
