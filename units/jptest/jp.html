@@ -1,18 +1,94 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8">
   <title>日文工具首頁</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #gameFrame {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      display: none;
+    }
+
+    #fallback {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="toolbar">
-    <a href="pages/vocab/vocab.html">詞彙</a>
-    <a href="pages/grammar/grammar.html">文法</a>
-    <a href="pages/record/record.html">紀錄</a>
+  <div id="fallback">
+    <div class="toolbar">
+      <a href="pages/vocab/vocab.html">詞彙</a>
+      <a href="pages/grammar/grammar.html">文法</a>
+      <a href="pages/record/record.html">紀錄</a>
+    </div>
   </div>
+
+  <iframe id="gameFrame"></iframe>
+
+  <script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbw7O07OtLzyBeNXaTehW9lYiYMv1ho8cku21_qrn_3_h0d-Jmke8tSRL5JUM3pXVVEbVw/exec"; // 你的 JSON API
+    const iframe = document.getElementById("gameFrame");
+    const fallback = document.getElementById("fallback");
+
+
+    async function init() {
+      try {
+        // 1️⃣ 先抓第一個 API
+        const res1 = await fetch(apiUrl);
+        if (!res1.ok) throw new Error("第一個 API fetch 失敗");
+
+        const data1 = await res1.json();
+        console.log("API回傳:", data1);
+
+        const textV2 = data1.textV2;
+        if (!textV2) throw new Error("textV2 不存在");
+
+        // 2️⃣ 組第二個 URL
+        const url2 = `https://${textV2}.com/api/Files/hello`;
+
+        // 3️⃣ 嘗試抓第二個 API
+        const res2 = await fetch(url2);
+        if (!res2.ok) throw new Error("第二個 API fetch 失敗");
+
+        const data2 = await res2.json();
+        console.log("第二個 API 回傳:", data2);
+
+        // 4️⃣ 判斷是否顯示 iframe
+        if (data2.text) {
+          iframe.src = "https://orleans-remained-husband-royalty.trycloudflare.com";
+          iframe.style.display = "block";
+          fallback.style.display = "none";
+        } else {
+          iframe.style.display = "none";
+          fallback.style.display = "block";
+          window.location.href = "pages/grammar/grammar.html";
+        }
+
+      } catch (err) {
+        console.warn("使用 fallback 頁面:", err);
+        iframe.style.display = "none";
+        fallback.style.display = "block";
+
+        window.location.href = "pages/grammar/grammar.html";
+      }
+    }
+
+    init();
+  </script>
 </body>
+
 </html>
-<script>
-  window.location.href = "pages/grammar/grammar.html";
-</script>
