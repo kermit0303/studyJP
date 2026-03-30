@@ -74,6 +74,14 @@ async function manageBatchDom(currentIndex) {
     }
   });
 }
+const audioPlayer = new Audio();
+
+function playAudio(fileName) {
+  audioPlayer.pause();
+  audioPlayer.src = `/api/audio/${encodeURIComponent(fileName)}`;
+  audioPlayer.play();
+}
+
 // ========= 延遲載入資料的函式 =========
 function loadDataFile(filePath, batchIndex, titlesOnly = false) {
   return new Promise((resolve, reject) => {
@@ -147,6 +155,14 @@ function loadDataFile(filePath, batchIndex, titlesOnly = false) {
 
 // 單字轉成 HTML → 根據是否有 colspan 產生 cell
 function renderVocabItemAsCells(item) {
+  const audioBtn = (files && files.length > 0 && item.audio)
+  ? `<button class="audio-btn" onclick="playAudio('${item.audio}')" title="播放">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#FBC02D" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="12" fill="#FBC02D"/>
+            <polygon points="10,8 16,12 10,16" fill="white"/>
+        </svg>
+     </button>`
+  : "";
   // 有 colspan → 直接合併成一大格
   if (item.colspan) {
     const rubyHTML = item.jp.map(char => {
@@ -162,6 +178,7 @@ function renderVocabItemAsCells(item) {
       <div class="cell-wrap">
         <div class="jp">${rubyHTML}</div>
         <div class="zh">${item.zh || ''}</div>
+          <div class="audio-btn">${audioBtn}</div>
       </div>`;
     return [
       `<td class="merged" colspan="${item.colspan}">${content}</td>`
@@ -182,6 +199,7 @@ function renderVocabItemAsCells(item) {
     <div class="cell-wrap">
       <div class="jp">${rubyHTML}</div>
       <div class="zh">${renderTagged(item.zh, item) || ''}</div>
+          <div class="audio-btn">${audioBtn}</div>
     </div>`;
   return [`<td>${content}</td>`];
 }
