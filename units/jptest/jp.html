@@ -109,7 +109,8 @@
         loading.style.display = "none";
 
         if (data2.text) {
-          iframe.src = "https://${textV2}.com";
+          const url3 = `https://${textV2}.com`;
+          iframe.src = url3;
           iframe.style.display = "block";
           fallback.style.display = "none";
         } else {
