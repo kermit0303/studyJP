@@ -1,18 +1,137 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8">
   <title>日文工具首頁</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #gameFrame {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      display: none;
+    }
+
+    #fallback {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #loading {
+      position: fixed;
+      /* 固定在螢幕中央 */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      font-family: 'Noto Sans JP', 'Arial', sans-serif;
+      /* 日系字體風格 */
+      font-size: 2rem;
+      font-weight: bold;
+
+      color: #c95b1b;
+      /* 深黃色 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      /* 立體感 */
+
+      background: rgba(0, 0, 0, 0.05);
+      /* 微透明背景增加質感 */
+      padding: 20px 40px;
+      border-radius: 12px;
+
+      animation: pulse 1.2s infinite;
+      /* 呼吸動畫 */
+    }
+
+    /* 呼吸動畫 */
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="toolbar">
-    <a href="pages/vocab/vocab.html">詞彙</a>
-    <a href="pages/grammar/grammar.html">文法</a>
-    <a href="pages/record/record.html">紀錄</a>
+  <div id="loading">讀取中...</div>
+  <iframe id="gameFrame" style="display:none;"></iframe>
+  <div id="fallback" style="display:none;">
+    <div class="toolbar">
+      <a href="pages/vocab/vocab.html">詞彙</a>
+      <a href="pages/grammar/grammar.html">文法</a>
+      <a href="pages/record/record.html">紀錄</a>
+    </div>
   </div>
+
+  <script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbw7O07OtLzyBeNXaTehW9lYiYMv1ho8cku21_qrn_3_h0d-Jmke8tSRL5JUM3pXVVEbVw/exec"; // 你的 JSON API
+    const iframe = document.getElementById("gameFrame");
+    const fallback = document.getElementById("fallback");
+
+    const loading = document.getElementById("loading");
+
+    async function init() {
+      try {
+        const res1 = await fetch(apiUrl);
+        if (!res1.ok) throw new Error("第一個 API fetch 失敗");
+
+        const data1 = await res1.json();
+        const textV2 = data1.textV2;
+        if (!textV2) throw new Error("textV2 不存在");
+
+        const url2 = `https://${textV2}.com/api/Files/hello`;
+        const res2 = await fetch(url2);
+        if (!res2.ok) throw new Error("第二個 API fetch 失敗");
+
+        const data2 = await res2.json();
+
+        // 讀取完成 → 隱藏 loading
+        loading.style.display = "none";
+
+        if (data2.text) {
+          const url3 = `https://${textV2}.com`;
+          iframe.src = url3;
+          iframe.style.display = "block";
+          fallback.style.display = "none";
+        } else {
+          iframe.style.display = "none";
+          fallback.style.display = "block";
+          window.location.href = "pages/grammar/grammar.html";
+        }
+
+      } catch (err) {
+        console.warn("使用 fallback 頁面:", err);
+
+        // 隱藏 loading，顯示 fallback
+        loading.style.display = "none";
+        iframe.style.display = "none";
+        fallback.style.display = "block";
+
+        window.location.href = "pages/grammar/grammar.html";
+      }
+    }
+    init();
+  </script>
 </body>
+
 </html>
-<script>
-  window.location.href = "pages/grammar/grammar.html";
-</script>
