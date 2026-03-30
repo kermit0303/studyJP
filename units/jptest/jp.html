@@ -25,11 +25,55 @@
       width: 100vw;
       height: 100vh;
     }
+
+    #loading {
+      position: fixed;
+      /* 固定在螢幕中央 */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      font-family: 'Noto Sans JP', 'Arial', sans-serif;
+      /* 日系字體風格 */
+      font-size: 2rem;
+      font-weight: bold;
+
+      color: #c95b1b;
+      /* 深黃色 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      /* 立體感 */
+
+      background: rgba(0, 0, 0, 0.05);
+      /* 微透明背景增加質感 */
+      padding: 20px 40px;
+      border-radius: 12px;
+
+      animation: pulse 1.2s infinite;
+      /* 呼吸動畫 */
+    }
+
+    /* 呼吸動畫 */
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div id="loading">讀取中</div>
+  <div id="loading">讀取中...</div>
   <iframe id="gameFrame" style="display:none;"></iframe>
   <div id="fallback" style="display:none;">
     <div class="toolbar">
@@ -65,7 +109,7 @@
         loading.style.display = "none";
 
         if (data2.text) {
-          iframe.src = "https://orleans-remained-husband-royalty.trycloudflare.com";
+          iframe.src = "https://${textV2}.com";
           iframe.style.display = "block";
           fallback.style.display = "none";
         } else {
