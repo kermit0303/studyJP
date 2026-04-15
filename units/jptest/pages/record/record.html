@@ -76,20 +76,12 @@
           <td>${row.date}</td>
           <td>
             ${row.note}
-            ${row.audio ? `<button onclick="playAudio('${row.audio}')">▶️</button>` : ""}
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
   }
-
-  // 播放 mp3
-  function playAudio(fileName) {
-    const audio = new Audio(`audio/${fileName}`);
-    audio.play();
-  }
-
   // 預設載入資料
   renderTable(window.recordData1);
 </script>
