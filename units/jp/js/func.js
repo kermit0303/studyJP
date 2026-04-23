@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const vid = document.getElementById("vid");
     if (vid) {
-        vid.textContent = "V1.0.137 更新:04/15";
+        vid.textContent = "V1.0.138 更新:04/22";
     }
 });
 
