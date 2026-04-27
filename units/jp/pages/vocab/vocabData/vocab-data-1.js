@@ -1158,7 +1158,7 @@ window.vocabData1 =
                     "jp": [
                         { "k": "ねぎ"}
                     ],
-                    //"audio": "ねぎ_蔥.MP3"
+                    "audio": "ねぎ_蔥.MP3"
                 },
                 {
                     "zh": "馬肉",
