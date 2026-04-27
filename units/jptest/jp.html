@@ -99,8 +99,8 @@
         const textV2 = data1.textV2;
         if (!textV2) throw new Error("textV2 不存在");
 
-        const url2 = `https://${textV2}.com/api/Files/hello`;
-        const url3 = `https://${textV2}.com`;
+        const url2 = `https://${textV2}/api/Files/hello`;
+        const url3 = `https://${textV2}`;
 
         // 🚀 先讓 iframe 開始載（但隱藏）
         iframe.src = url3;
