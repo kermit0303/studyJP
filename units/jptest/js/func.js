@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const vid = document.getElementById("vid");
     if (vid) {
-        vid.textContent = "V1.0.139 更新:04/27";
+        vid.textContent = "V1.0.141 更新:05/01";
     }
 });
 
@@ -27,7 +27,7 @@ function renderTagged(text, item) {
         const v = item[key];
 
         if (Array.isArray(v)) {
-            let first = true; // ⬅️ 宣告在外層
+            let first = true; // 宣告在外層
             const inner = v.map(val => {
                 let str = "";
                 try {
@@ -45,7 +45,7 @@ function renderTagged(text, item) {
                 return `<div>${val}</div>`;
             }).join('');
 
-            return `<span class="option-box">${inner}</span>`;
+            return `<span class='option-box'>${inner}</span>`;
         }
 
         if (typeof v === 'string' || typeof v === 'number') {
@@ -143,7 +143,7 @@ function parseTaggedText(str, item = {}) {
                 const arr = JSON.parse(innerParsed);
                 replaced = renderTwoPitch(arr);
             } catch (e) {
-                replaced = `<span class="${cls}">解析錯誤</span>`;
+                replaced = `<span class='${cls}'>解析錯誤</span>`;
             }
         } else if (cls === "pitch-q") {
             try {
@@ -153,7 +153,7 @@ function parseTaggedText(str, item = {}) {
                 const arr = JSON.parse(innerParsed);
                 replaced = renderPitchQuestion(arr);
             } catch (e) {
-                replaced = `<span class="${cls}">解析錯誤</span>`;
+                replaced = `<span class='${cls}'>解析錯誤</span>`;
             }
         } else if (cls === "box") {
             try {
@@ -162,17 +162,17 @@ function parseTaggedText(str, item = {}) {
                     if (innerParsed.startsWith('"') && innerParsed.endsWith('"')) {
                         innerParsed = innerParsed.slice(1, -1);
                         const arr = JSON.parse(innerParsed); // 嘗試解析 JSON
-                        replaced = `<span class="${cls}">${renderFurigana(arr)}</span>`;      // 是 JSON 就用 renderFurigana
+                        replaced = `<span class='${cls}'>${renderFurigana(arr)}</span>`;      // 是 JSON 就用 renderFurigana
                     }
                     else {
-                        replaced = `<span class="${cls}">${innerParsed}</span>`;
+                        replaced = `<span class='${cls}'>${innerParsed}</span>`;
                     }
                 } catch (e) {
                     // 不是 JSON → 當作普通字串處理
-                    replaced = `<span class="${cls}">${innerParsed}</span>`;
+                    replaced = `<span class='${cls}'>${innerParsed}</span>`;
                 }
             } catch (e) {
-                replaced = `<span class="${cls}">解析錯誤</span>`;
+                replaced = `<span class='${cls}'>解析錯誤</span>`;
             }
         }
         else if (cls === 'blue-underline') {
@@ -182,16 +182,16 @@ function parseTaggedText(str, item = {}) {
                 innerParsed = text.slice(1, -1);
                 const arr = JSON.parse(innerParsed); // 嘗試解析 JSON
                 replaced = `<span class="blue-underline-wrapper">
-                <span class="underblue">${renderFurigana(arr)}</span>
-                <span class="undernote">${note ?? ''}</span>
+                <span class='underblue'>${renderFurigana(arr)}</span>
+                <span class='undernote'>${note ?? ''}</span>
                 </span>
                 `;      // 是 JSON 就用 renderFurigana
             }
             else {
                 replaced = `
             <span class="blue-underline-wrapper">
-              <span class="underblue">${text}</span>
-              <span class="undernote">${note ?? ''}</span>
+              <span class='underblue'>${text}</span>
+              <span class='undernote'>${note ?? ''}</span>
             </span>
           `;
             }
@@ -210,9 +210,9 @@ function parseTaggedText(str, item = {}) {
                 replaced = `<span class="error">Furigana 錯誤</span>`;
             }
         } else if (cls === "icon") {
-            replaced = `<span class="icon ${innerParsed}"></span>`;
+            replaced = `<span class='icon ${innerParsed}'></span>`;
         } else {
-            replaced = `<span class="${cls}">${innerParsed}</span>`;
+            replaced = `<span class='${cls}'>${innerParsed}</span>`;
         }
 
         result += replaced;

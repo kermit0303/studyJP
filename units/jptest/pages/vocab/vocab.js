@@ -58,14 +58,14 @@ async function loadBatch(batchIndex) {
 async function manageBatchDom(currentIndex) {
   const keep = [currentIndex - 1, currentIndex, currentIndex + 1];
 
-  // 1️⃣ 補齊缺失 batch
+  // 補齊缺失 batch
   for (let idx of keep) {
     if (idx >= 1 && idx <= maxpage && !loadedContentsSet.has(idx)) {
       await loadBatch(idx);
     }
   }
 
-  // 2️⃣ 刪除不在 keep 的 batch
+  // 刪除不在 keep 的 batch
   document.querySelectorAll('.batch-container').forEach(el => {
     const idx = parseInt(el.dataset.batchIndex);
     if (!keep.includes(idx)) {
@@ -109,17 +109,17 @@ function loadDataFile(filePath, batchIndex, titlesOnly = false) {
               if (table.caption) {
                 createCaption(table.caption, sectionIndex, table);
               }
-              // 1️⃣ 用 renderTable 生成完整 HTML
+              //用 renderTable 生成完整 HTML
               const tableHTML = renderTagged(renderTable(table), table); // 如果需要，可以傳 item 或 table
 
-              // 2️⃣ 用 wrapper 包起來
+              // 用 wrapper 包起來
               const wrapper = document.createElement('div');
               wrapper.innerHTML = tableHTML;
 
               const section = document.createElement('section');
               section.id = `section-${sectionIndex}`;
               section.dataset.batch = batchIndex;
-              // 3️⃣ 放到 section，再放到 container
+              // 放到 section，再放到 container
               section.appendChild(wrapper);
               container.appendChild(section);
 

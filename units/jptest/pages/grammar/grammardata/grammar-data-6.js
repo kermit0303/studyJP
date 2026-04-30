@@ -1,5 +1,33 @@
 window.grammarData6 = [
     {
+        "tile": "が　但是(放在第1句的句尾)",
+        "desp": "[[icon-important|負面，但不一定是否定句]]",
+        "trans": "句型 : 優點 + 缺點 或是 缺點 + 優點 ",
+        "exam": [
+            {
+                "id": 1,
+                "dia": [
+                    {
+                        "jp": [
+                            {
+                                "k": "[[blue-underline|これはおいしいで[[pitch|\"[{\"k\":\"す\",\"p\":\"H\"},{\"k\":\"が\",\"p\":\"L\"}]\"]]。|第一句]][[blue-underline|\"[{\"k\":\"高\",\"f\":\"たか\"},{\"k\":\"いです。\"}]\"|第二句]]"
+                            },
+                        ],
+                    },
+                    {//\"[{\"k\":\"安\",\"f\":\"やす\"},{\"k\":\"くないです。\"}]\"
+                        "jp": [
+                            {
+                                "k": " = [[blue-underline|これはおいしいで[[pitch|\"[{\"k\":\"す\",\"p\":\"H\"},{\"k\":\"が\",\"p\":\"L\"}]\"]]。|第一句]][[blue-underline|\"[{\"k\":\"安\",\"f\":\"やす\"},{\"k\":\" [[strike|い]]くないです。\"}]\"|第二句]]"
+                            }
+                        ],
+                        "zh": "這個很好吃，[[blue|但是]]很貴。"
+                    }
+                ]
+            }
+        ],
+
+    },
+    {
         "tile": "3/31 短句練習",
         "exam": [
             {
@@ -295,7 +323,7 @@ window.grammarData6 = [
                 "dia": [
                     {
                         "jp": [
-                            
+
                             {
                                 "k": "きょう、"
                             },
@@ -364,10 +392,10 @@ window.grammarData6 = [
             }
         ]
     },
-{
+    {
         "tile": "そして",
         "desp": "(放在第2句的句首)而且",
-        "trans":"[[icon-important|只有正面的意思]]",
+        "trans": "[[icon-important|只有正面的意思]]",
         "exam": [
             {
                 "id": 1,
@@ -500,17 +528,17 @@ window.grammarData6 = [
             }
         ],
         "tables": [
-        {
-            "caption": "好的<br> [[icon-important|いいです只有肯定]]",
-            "header": ["敬體", "", "基本體(口語)"],
-            "rows":
-                [
-                    ["[{\"k\":\"[br2]\"}]", "好的<br>(肯定)", "[{\"k\":\"[br3]\"}]"],
-                    ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][br1]<br>[[icon|error-icon]]い[[strike|い]][br1]\"}]", "不好<br>(否定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[blue|くない]]<br>[[icon|error-icon]]い[[blue|くない]]\"}]"],
-                    ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][[blue|か[[small|っ]]たです]]<br>[[icon|error-icon]]い[[strike|い]][[blue|か[[small|っ]]たです]]\"}]", "很好<br>(過去肯定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[blue|か[[small|っ]]た]]<br>[[icon|error-icon]]い[[blue|か[[small|っ]]た]]\"}]"],
-                    ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][[blue|くなか[[small|っ]]たです]]<br>[[icon|error-icon]]い[[strike|い]][[blue|くなか[[small|っ]]たです]]\"}]", "沒有很好<br>(過去否定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"く[[blue|なか[[small|っ]]た]]<br>[[icon|error-icon]]いく[[blue|なか[[small|っ]]た]]\"}]"]
-                ]
-        }
+            {
+                "caption": "好的<br> [[icon-important|いいです只有肯定]]",
+                "header": ["敬體", "", "基本體(口語)"],
+                "rows":
+                    [
+                        ["[{\"k\":\"[br2]\"}]", "好的<br>(肯定)", "[{\"k\":\"[br3]\"}]"],
+                        ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][br1]<br>[[icon|error-icon]]い[[strike|い]][br1]\"}]", "不好<br>(否定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[blue|くない]]<br>[[icon|error-icon]]い[[blue|くない]]\"}]"],
+                        ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][[blue|か[[small|っ]]たです]]<br>[[icon|error-icon]]い[[strike|い]][[blue|か[[small|っ]]たです]]\"}]", "很好<br>(過去肯定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[blue|か[[small|っ]]た]]<br>[[icon|error-icon]]い[[blue|か[[small|っ]]た]]\"}]"],
+                        ["[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"[[strike|い]][[blue|くなか[[small|っ]]たです]]<br>[[icon|error-icon]]い[[strike|い]][[blue|くなか[[small|っ]]たです]]\"}]", "沒有很好<br>(過去否定)", "[{\"k\":\"[[icon|success-icon]]\"},{\"k\":\"良\",\"f\":\"よ\"},{\"k\":\"く[[blue|なか[[small|っ]]た]]<br>[[icon|error-icon]]いく[[blue|なか[[small|っ]]た]]\"}]"]
+                    ]
+            }
         ],
         "br1": [
             "くないです",
