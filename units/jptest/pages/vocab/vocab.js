@@ -1,5 +1,5 @@
 let currentPage = 1;
-let maxpage = 3;
+let maxpage = 4;
 let minLoadedBatch = maxpage;
 
 let categoryList;

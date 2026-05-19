@@ -17,6 +17,9 @@
  6/24 影片先看一下
  い形容詞 6.7. 還沒處理
  
+V1.0.142
+- [Improvement] 更新5/19
+
 V1.0.141
 - [Improvement] 更新4/28單字
 - [Bugfix] 修改class

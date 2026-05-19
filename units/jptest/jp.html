@@ -102,11 +102,11 @@
         const url2 = `https://${textV2}/api/Files/hello`;
         const url3 = `https://${textV2}`;
 
-        // 🚀 先讓 iframe 開始載（但隱藏）
+        // 先讓 iframe 開始載（但隱藏）
         iframe.src = url3;
         iframe.style.display = "none";
 
-        // 🚀 同時打 API 驗證
+        // 同時打 API 驗證
         const res2 = await fetch(url2);
         if (!res2.ok) throw new Error("第二個 API fetch 失敗");
 
@@ -116,11 +116,11 @@
         loading.style.display = "none";
 
         if (data2.text) {
-          // ✅ 驗證成功 → 直接顯示（此時 iframe 很可能已經載一半甚至完成）
+          // 驗證成功 → 直接顯示（此時 iframe 很可能已經載一半甚至完成）
           iframe.style.display = "block";
           fallback.style.display = "none";
         } else {
-          // ❌ 驗證失敗
+          // 驗證失敗
           iframe.src = "";
           fallback.style.display = "block";
           window.location.href = "pages/grammar/grammar.html";
